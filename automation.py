@@ -47,7 +47,7 @@ elif not force_download:
 
 
 # Get input
-response = requests.get(f"https://adventofcode.com/{year}/day/{day}/input", cookies={"session":SESSION_TOKEN})
+response = requests.get(f"https://adventofcode.com/{year}/day/{day}/input", cookies={"session":SESSION_TOKEN, "User-Agent":"https://github.com/Rickerd1234/Advent-of-Code/blob/main/automation.py by Discord: Rickerd1234 hashtag 6169"})
 if response.status_code != 200:
     failed(f"Failed to download {year}-{day}: "+ response.text)
 
