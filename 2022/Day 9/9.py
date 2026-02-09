@@ -1,28 +1,35 @@
 # Imports
 from sys import argv
 from os.path import dirname
+from os import system
 
 
 # Read input from file
 with open(dirname(argv[0]) + "/inp.txt", "r") as file:
     inp = [line.strip("\n") for line in file]
 
-def visualize(parts, size):
-    for y in range(*size):
-        for x in range(*size):
+def visualize(parts, part_set, size):
+    xl,xh,yl,yh = size
+    system('cls')
+    vis = ""
+    for x in range(xl,xh):
+        for y in range(yl,yh):
             for part in parts:
                 if (part.x, part.y) == (x,y):
-                    print(part.label,end="")
+                    vis += part.label
                     break
             else:
-                print(".",end="")
-        print()
-    print()
+                if (x,y) in part_set:
+                    vis += u"\u001b[36m" + "#" + "\u001b[0m"
+                else:
+                    vis += " "
+        vis += "\n"
+    print(vis, end="\n")
 
 class Head():
     def __init__(self):
         self.x, self.y = 0, 0
-        self.label = "H"
+        self.label = u"\u001b[33m" + "H" + "\u001b[0m"
 
     def move(self, dx, dy):
         self.x += dx
@@ -31,7 +38,7 @@ class Head():
 class Rope():
     def __init__(self, label, pred):
         self.x, self.y = 0, 0
-        self.label = label
+        self.label = u"\u001b[31m" + label + "\u001b[0m"
         self.pred = pred
 
         self.visited = {(self.x, self.y)}
@@ -94,6 +101,7 @@ def p12(inp):
             head.move(dx,dy)
             for tail in tails:
                 tail.update()
+        visualize([head] + tails, tails[-1].visited, (-30,30,-80,5))
 
     print(len(tails[0].visited))
     print(len(tails[-1].visited))
